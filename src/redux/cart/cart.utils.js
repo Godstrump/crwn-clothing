@@ -9,7 +9,5 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
       )
   }
 
-  console.log('it doesnt exist');
-
   return [...cartItems, {...cartItemToAdd, quantity: 1}]
 }
