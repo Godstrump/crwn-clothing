@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { createStructuredSelector } from 'reselect';
+import { createStructuredSelector } from 'reselect';
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
@@ -10,9 +10,10 @@ import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up
 import Header from './components/header/header.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
-// import { selectCurrentUser } from './redux/user/user.selectors';
+import { selectCollectionsForPreview } from './redux/shop/shop.selectors'
+import { selectCurrentUser } from './redux/user/user.selectors';
 
 
 class App extends React.Component {
@@ -27,7 +28,7 @@ class App extends React.Component {
   unsubscribeFromAuth = null
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, collectionsArray } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       // this.setState({ currentUser: user })
       // createUserProfileDocument(user);
@@ -44,7 +45,8 @@ class App extends React.Component {
             })
           });
       } else {
-        setCurrentUser(userAuth)
+        setCurrentUser(userAuth);
+        addCollectionAndDocuments('collections', collectionsArray)
       }
     })
   }
@@ -73,12 +75,14 @@ class App extends React.Component {
   
 }
 
-// const mapStateToProps = createStructuredSelector({
-//   currentUser: selectCurrentUser
-// })
+// const mapStateToProps =  ({user}) => ({
+//   currentUser: user.currentUser,
+//   collectionsArray: selectCollectionsForPreview
+// })55][=-[]]
 
-const mapStateToProps =  ({user}) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionsForPreview
 })
 
 const mapDispatchToProps = dispatch => ({
