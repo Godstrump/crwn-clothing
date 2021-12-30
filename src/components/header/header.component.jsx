@@ -14,7 +14,6 @@ import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { HeaderContainer, LogoContainer, OptionsContainer, OptionLink } from './header.styles';
 
 const Header = ({ currentUser, hidden }) => {
-  console.log('cUUU',currentUser);
     
   return (
   <HeaderContainer>
