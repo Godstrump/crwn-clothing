@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -11,31 +11,25 @@ import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 // const CollectionOverviewWithSpinner = WithSpinner(CollectionsOverview);
 // const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
-class ShopPage extends React.Component {
+const ShopPage = ({ match, fetchCollectionsStart }) => {
 
-  componentDidMount() {
-    const { fetchCollectionsStart } = this.props;
+  useEffect(() => {
     fetchCollectionsStart();
-  }
+  }, [fetchCollectionsStart])
 
-  render() {
-    const { match } = this.props;
-
-
-    return (
-      <div className='shop-page'>
-        <Route 
-          exact 
-          path={`${match.path}`}
-          component={CollectionsOverviewContainer}
-          />
-        <Route 
-          path={`${match.path}/:collectionId`} 
-          component={CollectionPageContainer}
+  return (
+    <div className='shop-page'>
+      <Route 
+        exact 
+        path={`${match.path}`}
+        component={CollectionsOverviewContainer}
         />
-      </div>
-    )
-  }
+      <Route 
+        path={`${match.path}/:collectionId`} 
+        component={CollectionPageContainer}
+      />
+    </div>
+  )
 }
 
 // const mapStateToProps = createStructuredSelector({
